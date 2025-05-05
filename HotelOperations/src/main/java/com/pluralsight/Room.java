@@ -31,11 +31,11 @@ public class Room {
         return price;
     }
 
-    public boolean isOccupied() {
+    public boolean occupied() {
         return occupied;
     }
 
-    public boolean isDirty() {
+    public boolean dirty() {
         return dirty;
     }
 
@@ -44,16 +44,59 @@ public class Room {
     }
 
     //   === Methods to change state of room ===
-    public void occupy() {
-        this.occupied = true;
+
+    // Checks guest into a room
+    // The room must be available and not dirty to check into it
+    public void checkIn() {
+        if (isAvailable()) {
+            this.occupied = true;
+            this.dirty = true;
+            System.out.println("\nCheck-in Successful! Room is occupied and marked as dirty.");
+        }else {
+            System.out.println("\nCheck-in failed: Room is not available.");
+            if (occupied) {
+                System.out.println("Reason: Room is already occupied.\n");
+            }
+            if (dirty) {
+                System.out.println("Reason: Room is dirty and needs to be cleaned.\n");
+            }
+        }
     }
 
-    private void vacate() {
-        this.occupied = false;
-        this.dirty = true;
+    // Checks guest out of room
+    // The room must be occupied to be checked out of
+    // After check-out, the room becomes unoccupied but is marked/remains dirty
+    public void checkOut() {
+        if (this.occupied) {
+            this.occupied = false;
+            this.dirty = true;
+
+            System.out.println("\nCheck-out Successful! Room is unoccupied and marked as dirty.");
+        }else {
+            System.out.println("\nCheck-out failed: Room is not occupied.");
+        }
     }
 
+    // Cleans the room
+    // Must be unoccupied to be cleaned
     public void cleanRoom() {
-        this.dirty = false;
+        if (this.occupied) {
+            System.out.println("Cannot clean an occupied room.");
+        } else if (!this.dirty) {
+            System.out.println("\nRoom is already clean.");
+        }else {
+            this.dirty = false;
+            System.out.println("\nRoom has been cleaned. It is now available for check-in!");
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Room status:\n" +
+                "Beds: " + numberOfBeds +
+                "\nPrice: $" + String.format("%.2f", price) +
+                "\nOccupied: " + occupied +
+                "\nDirty: " + dirty +
+                "\nAvailable: " + isAvailable();
     }
 }

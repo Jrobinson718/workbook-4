@@ -1,5 +1,7 @@
 package com.pluralsight;
 
+import java.util.Locale;
+
 public class Reservation {
     //   === Constants ===
     private static final double kingPrice = 139.00;
@@ -83,5 +85,23 @@ public class Reservation {
 
     public void setIsWeekend(boolean weekend) {
         this.weekend = weekend;
+    }
+
+    @Override
+    public String toString() {
+        // Use Locale.US to ensure consistent currency formatting (e.g., using '.')
+        return String.format(
+                "\nReservation Details:\n" +
+                        "Room Type: %s\n" +
+                        "Nights: %d\n" +
+                        "Weekend Stay: %b\n" +
+                        "Price Per Night: $%.2f\n" +
+                        "Total Cost: $%.2f",
+                roomType,
+                numberOfNights,
+                weekend,
+                getPrice(), // Use getter to ensure calculated price
+                getReservationTotal() // Use getter for total
+        );
     }
 }
