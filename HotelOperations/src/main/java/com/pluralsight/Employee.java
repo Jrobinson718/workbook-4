@@ -1,5 +1,7 @@
 package com.pluralsight;
 
+import java.time.LocalDateTime;
+
 public class Employee {
 
     private static final double standardHoursWeekly = 40.0;
@@ -71,8 +73,17 @@ public class Employee {
         this.hoursWorked = hoursWorked;
     }
 
+
+    // Records a time card punch using the current time. (Based on time zone)
+    // Same rules as below works as a punch in if they're punched out and vice versa
+    public void punchTimeCard() {
+        LocalDateTime now = LocalDateTime.now();
+        double currentTime = now.getHour() + (now.getMinute() / 60.0);
+        System.out.println("Automatic time punch. Current time: " + now.toLocalTime().withNano(0));
+        punchTimeCard(currentTime);
+    }
     // Creating a time punch card where if the employee is punched in it acts as a punch out and vice versa
-    // Calculates the duration of the shift, adds to hoursWorked and changed employee to punched out
+    // Calculates the duration of the shift, adds to hoursWorked and changes employee to punched out
     public void punchTimeCard(double time) {
         if (time < 0) {
             throw new IllegalArgumentException("Punch time can't be negative.");
